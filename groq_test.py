@@ -3,10 +3,8 @@ from dotenv import load_dotenv
 from groq import Groq
 
 # 1. Load the "Vault" (.env)
-# Get access to the API key and model from the .env file
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
-ai_model = os.getenv("GROQ_MODEL")
 
 # 2. Check if the key exists
 if not api_key:
@@ -19,8 +17,8 @@ else:
 
     # 4. Ask a simple question
     completion = client.chat.completions.create(
-        model = ai_model, # (llama-3.3-70b-versatile is great for logic)
-        messages=[{"role": "user", "content": "Tell me what is the capital of France?"}]
+        model="llama-3.1-8b-instant", # This is a fast, reliable model
+        messages=[{"role": "user", "content": "Explain the Zettelkasten method in 1 sentence."}]
     )
 
     # 5. Print the "Brain's" response
