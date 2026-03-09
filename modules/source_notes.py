@@ -2,20 +2,11 @@ from youtube_transcript_api import YouTubeTranscriptApi
 import yt_dlp #pip install yt-dlp    <----- import statement
 import re
 
-def safe_filename(name: str) -> str:
-    # Windows-invalid: <>:"/\|?* plus control chars; also trims trailing dots/spaces
-    if not name:
-        return ""
-    name = re.sub(r'[<>:"/\\|?*\x00-\x1F]+', "_", name)
-    return name.strip().strip(".")
-
 class SourceNotes:
     def __init__(self, user_input=""):
         self.video_url = user_input
 
-
-
-    
+# -----------------------------------------YOUTUBE_TRANSCRIPTS_CODE-----------------------------------------
     def youtube_vid_title(self):
         ydl_opts = {'quiet': True}
 
@@ -23,7 +14,8 @@ class SourceNotes:
             info = ydl.extract_info(self.video_url, download=False)
             yt_title = info.get('title')
 
-        return safe_filename(yt_title)
+        yt_title = re.sub(r'[<>:"/\\|?*\x00-\x1F]+', "_", yt_title)
+        return yt_title.strip().strip(".")
 
 
     def youtube_transcript(self):
@@ -48,12 +40,7 @@ class SourceNotes:
 
 
 
-    
-
-
-
-
-    
+# -----------------------------------------PDF_TRANSCRIPTS_CODE-----------------------------------------
 
     def pdf_transcript(self):
         pass
