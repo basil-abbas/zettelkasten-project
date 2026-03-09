@@ -17,7 +17,7 @@ else:
 
     # 4. Ask a simple question
     completion = client.chat.completions.create(
-        model="llama-3.1-8b-instant", # This is a fast, reliable model
+        model="llama-3.3-70b-versatile", # This is a fast, reliable model
         messages=[{"role": "user", "content": "Explain the Zettelkasten method in 1 sentence."}]
     )
 

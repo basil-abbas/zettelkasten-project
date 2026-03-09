@@ -1,10 +1,13 @@
+from fileinput import filename
 from youtube_transcript_api import YouTubeTranscriptApi
 import yt_dlp #pip install yt-dlp    <----- import statement
 import re
+import os, shutil #To save the files in a specific folder
 
 class SourceNotes:
     def __init__(self, user_input=""):
         self.video_url = user_input
+        self.filename = ""
 
 # -----------------------------------------YOUTUBE_TRANSCRIPTS_CODE-----------------------------------------
     def youtube_vid_title(self):
@@ -32,11 +35,25 @@ class SourceNotes:
 
         title = self.youtube_vid_title() or video_id
 
-        filename = f"{title}-Youtube_transcript.txt" #custom file name
+        self.filename = f"{title}-Youtube_transcript.txt" #custom file name
 
-        with open(filename, "w", encoding="utf-8") as transcript_file:
+        with open(self.filename, "w", encoding="utf-8") as transcript_file:
             transcript_file.write(completed_transcript)
-        print(f"File has been saved: {filename}")
+        print(f"File has been saved: {self.filename}")
+
+        self.save_transcript()
+        
+
+    # May need to update code for this not sure
+    def save_transcript(self):
+        try:
+            shutil.move(self.filename,"Module_SourceNotes\Exported_Transcripts") # takes in 2 parameters, the name of the file, and where you are moving it to
+            print(self.filename)
+            print(f"And was able to move {self.filename} to its destination")
+        except FileNotFoundError:
+            print(f"Error: The source file '{self.filename}' was not found")
+        except Exception as e:
+            print(f"Found error: {e}")
 
 
 
