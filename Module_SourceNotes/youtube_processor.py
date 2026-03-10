@@ -13,7 +13,8 @@ def get_video_transcript(video_url):
         ytt = YouTubeTranscriptApi()
         transcript_data = ytt.fetch(video_id)
         
-        full_text = " ".join([item.text for item in transcript_data])
+        # Join each transcript chunk on its own line for readability
+        full_text = "\n".join([item.text for item in transcript_data])
         return full_text
         
     except Exception as e:

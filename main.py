@@ -3,34 +3,36 @@ import Module_SourceNotes.source_notes as source_notes_module
 
 # Test to use for now: https://www.youtube.com/watch?v=g2-_pnmhO4A&list=PLyxTU7oQdPUUaTxPYdGe7x_V03x2SI5Zf&index=3
 
-print("\n" * 5)
-print("Welcome to the Zettelkasten Note Taking App\nPlease select some form of source notes (URL, Video, etc.)")
+def main():
+    print("\n" * 5)
+    print("Welcome to the Zettelkasten Note Taking App")
+    while True: 
+        print("--------------------------------------------")
+        print("1. YouTube transcript")
+        print("2. PDF (local file)")
+        print("3. PDF (URL)")
+        print("4. Quit")
+        print("--------------------------------------------")
 
-user_input = input("Enter the source notes url: ")
+        choice = input("Select option 1, 2, 3, or 4").strip()
 
-current_note = source_notes_module.SourceNotes(user_input)
+        if choice == "1":
+            url = input("Enter your url:").strip()
+            note = source_notes_module.SourceNotes(url)
+            note.youtube_transcript()
+        elif choice == "2":
+            path = input("Enter local PDF path (e.g. C:/docs/file.pdf): ").strip()
+            note = source_notes_module.SourceNotes()
+            note.pdf_transcript(path)
+        elif choice == "3":
+            url = input("Enter PDF URL: ").strip()
+            note = source_notes_module.SourceNotes()
+            note.pdf_transcript(url)
+        elif choice == "4":
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid option, please pick from 1, 2, 3, or 4")
 
-current_note.youtube_transcript()
-
-
-
-
-#-----------------NEW_TEST_CODE--------------------
-
-# print("\n" * 5)
-# print("Welcome to the Zettelkasten Note Taking App\nPlease select some form of source notes (Youtube URL, PDF, etc.)")
-
-# user_input = input("Enter the source notes url: ")
-
-# while True:
-#     current_note = source_notes_module.SourceNotes()
-
-#     if user_input == 'yt' or '1':
-#         current_note.youtube_transcript(user_input)
-
-#     elif user_input == 'pdf' or '2':
-#         current_note.pdf_transcript()
-#     else:
-#         break
-
-
+if __name__ == "__main__":  
+    main()
