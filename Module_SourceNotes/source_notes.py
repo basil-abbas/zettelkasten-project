@@ -1,8 +1,7 @@
-from fileinput import filename
 from youtube_transcript_api import YouTubeTranscriptApi
 import yt_dlp #pip install yt-dlp    <----- import statement
 import re
-import os, shutil #To save the files in a specific folder
+import shutil #To save the files in a specific folder
 
 class SourceNotes:
     def __init__(self, user_input=""):
@@ -23,7 +22,7 @@ class SourceNotes:
 
     def youtube_transcript(self):
         if "v=" in self.video_url:
-            video_id = self.video_url.split("v=")[1].split("&")[0] #Takes the Yt url and splits the list into two halves, where everything between v= is 0 and after is 1 and then it's repeated.
+            video_id = self.video_url.split("v=")[1].split("&")[0] #Takes the Yt url and splits the list into two halves, where everything before v= is 0 and after is 1 and then it's repeated.
         else:
             video_id = self.video_url.split("/")[-1] #does the same thing splitting the link everywhere with a '/' and then grabbing the last element which is the id
         

@@ -1,0 +1,64 @@
+Imagine you have a place where you can store 
+all your notes and insights in such a way   that it helps you to a deeper understanding of 
+the topics that interest you. And even more:   A place where your own work on these 
+topics emerges almost by itself.  That is the promise of the Zettelkasten, 
+a second brain that in some ways   functions better than your first one.
+You've probably heard this term before:   the Zettelkasten actually a thing of the 20th 
+century, but it has seen a digital revival   around the year 2020 – thanks to an ongoing 
+research project at Bielefeld University,   a popular book and a bunch of apps. The book is 
+titled How To Take Smart Notes by Sönke Ahrens. It's this one. And the apps are called Logseq, Obsidian, Roam 
+Research, to name a few. With these, anyone can   build their own digital Zettelkasten – in theory.
+Now, let's talk about, what the Zettelkasten   method is, who it's for and how it works in a 
+digital environment. At the end of this video   you can decide for yourself if this method 
+is something for you. Since I came across it,   the idea behind the Zettelkasten has 
+significantly impacted the way I work.   And I’m looking forward to reading your thoughts on 
+this and about your experiences in the comments. My name is David. Nice to meet you. Let's dive in. The Zettelkasten method goes back to Niklas 
+Luhmann, a German sociologist who in academic   circles is famous for his systems theory and 
+his incredible productivity. He published over   50 books and hundreds of articles. About half a 
+dozen more works were published in his name after   he passed away – to which Sönke Ahrens writes:
+There are more than a few colleagues I know who   would give a lot to be as productive in their 
+whole lifetime as Luhmann was after this death. What made him so productive was his unique way of 
+note-taking and knowledge management, in the form   of the Zettelkasten. It allowed him to collect 
+thoughts in a way so he could retrieve them any   time, find meaningful connections and thus build 
+a large knowledge base as foundation for his work.  The term Zettelkasten translates to »slip box« 
+and that's just what it is: boxes filled with   slips of paper called »Zettel«. That and a pen 
+was all Luhmann needed. He has written about   90,000 of this »Zettel«. His archive has 
+been digitized and gives an impression   of how complex his method actually 
+was, despite such simple equipment. The method can be simplified to three main steps. 
+The first step is to take notes as you read. Every   bit of information that seems relevant in some 
+way, you write down in your own words. That,   instead of just highlighting what seems 
+important and never get back to it.  In practice, let's be real here, you sometimes 
+probably still want to just highlight as you   read. The solution is to review your highlights 
+in a timely manner – for example, with a service   like Readwise – and then transfer and rewrite 
+your highlights properly into your Zettelkasten.  These notes, which contain insights from 
+your readings, are commonly referred to   as literature notes. I prefer to speak of 
+media notes, since I can of course make such   notes on anything I consume as media, even 
+online courses, podcasts or YouTube videos.  Regardless of the medium, it is important to 
+keep these notes short and to the point. At   best one idea per note. Phrasing 
+them in your own words helps to   sharpen your own understanding of this idea.
+Second, take what is called »bibliographical   notes« or »reference notes«. After you’ve finished 
+reading something or consuming any kind of media,   you write down some reference information on this 
+work, such as it's title, name of the author or   creator, year or date it was published – plus, you 
+write a brief note about the content of this work.  Third and most importantly, for your notes to 
+really live in your Zettelkasten – and not just   catch dust there – you have to transform them 
+into permanent notes. In doing so, on the one   hand, you want to be selective and only include 
+notes that really relate to your interests.   On the other hand, you want to include 
+as many stimulating thoughts as possible.  To do that, you review your media notes with your 
+interests and research topics in mind and find   meaningful connection between new and existing 
+notes. The more often and regularly you do this,   the easier it will be for you and the 
+better you will remember the contents   of your knowledge base. This is 
+how new trains of thought emerge. The challenge is not to pack too much 
+irrelevant information into a note - it's   not supposed to be a Wikipedia page – but 
+enough to create as many links as possible   to your existing body of notes. Ask yourself: 
+Why do you want to keep this note? What does   it relate to? You may also add relevant 
+keywords based on recurring interests,   research topics or projects of yours. All 
+this helps your future self to notice this   note when being engaged in this context. A note 
+that doesn't link to others will be forgotten. This method is for you if you read and 
+research a lot while building your own   framework of thoughts. But such a Zettelkasten 
+is not meant for any kind of note, such as notes   on contacts or your journal. I have also left out 
+the topic of »fleeting notes« here, as they rarely   make their way into the Zettelkasten.
+In times of digital note-taking,   it is even more important and difficult to keep a 
+certain order within your notes. Because nowadays,   our digital knowledge base often contains much 
+more than Niklas Luhmann would have put into his   Zettelkasten. But that's another topic for another 
+time. Feel free to post questions and feedback in   the comments. Thanks for your attention – 
+and I’ll catch you on the flip side! Bye!
