@@ -33,7 +33,7 @@ We’ll evolve this into a **three-layer architecture**:
 
 - **Ingestion layer** (SourceNotes module): pull text from external sources (YouTube, PDFs, web pages, manual input) and normalize it into plain text.
 - **Zettelkasten core** (Notes & Links + Storage): break text into atomic notes, tag them, store them, and maintain bidirectional links.
-- **Intelligence & UI** (AI Manager + App shell): surface notes, search, and suggested connections through a simple UI (CLI or web) and later AI features.
+  - **Intelligence & UI** (AI Manager + App shell): surface notes, search, and suggested connections through a simple UI (CLI or web) and later AI features.
 
 ```mermaid
 flowchart TD
