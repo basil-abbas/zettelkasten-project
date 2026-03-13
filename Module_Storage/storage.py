@@ -7,5 +7,3 @@ class Databasemanager():
 
     def get_connection(self): #connects the sqlite3 database to the database class
         return sqlite3.connect(self.db_name)
-
-    print("nigga balls")
