@@ -7,3 +7,7 @@ class Databasemanager():
 
     def get_connection(self): #connects the sqlite3 database to the database class
         return sqlite3.connect(self.db_name)
+<<<<<<< HEAD:Module_Storage/storage.py
+=======
+
+>>>>>>> 7732ea74217ea96f515b7e4cbb6786108d2ba1bb:Module_SourceNotes/storage.py
