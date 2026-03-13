@@ -9,7 +9,7 @@ def main():
     while True: 
         print("--------------------------------------------")
         print("1. YouTube transcript")
-        print("2. PDF (local file)")
+        print("2. PDF (local file Path)")
         print("3. PDF (URL)")
         print("4. Quit")
         print("--------------------------------------------")
@@ -20,6 +20,7 @@ def main():
             url = input("Enter your url:").strip()
             note = source_notes_module.SourceNotes(url)
             note.youtube_transcript()
+            print(note.completed_sourcenotes)
         elif choice == "2":
             path = input("Enter local PDF path (e.g. C:/docs/file.pdf): ").strip()
             note = source_notes_module.SourceNotes()

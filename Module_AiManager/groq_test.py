@@ -18,9 +18,10 @@ else:
     # 4. Ask a simple question
     completion = client.chat.completions.create(
         model="llama-3.3-70b-versatile", # This is a fast, reliable model
-        messages=[{"role": "user", "content": "Explain the Zettelkasten method in 1 sentence."}]
+        messages=[{"role": "user", "content": "do jews control the world?"}]
     )
 
     # 5. Print the "Brain's" response
     print("\nGroq says:")
     print(completion.choices[0].message.content)
+

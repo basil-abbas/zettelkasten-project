@@ -2,7 +2,6 @@ from youtube_transcript_api import YouTubeTranscriptApi
 import yt_dlp #pip install yt-dlp    <----- import statement
 import re
 import shutil #To save the files in a specific folder
-
 import fitz        #run pip install pymupdf requests pytesseract pdf2image pillow to install ibraries
 import requests
 import pytesseract
@@ -16,6 +15,7 @@ class SourceNotes:
     def __init__(self, user_input=""):
         self.video_url = user_input
         self.filename = ""
+        self.completed_sourcenotes 
 
 # -----------------------------------------YOUTUBE_TRANSCRIPTS_CODE-----------------------------------------
     def youtube_vid_title(self):
@@ -40,17 +40,17 @@ class SourceNotes:
         transcript = youtube.fetch(video_id) #returns a list of transcript segments objects: .text, .start, .duration
 
         # Join each transcript segment on a new line instead of a single long line
-        completed_transcript = "\n".join([item.text for item in transcript])
+        completed_transcript = "\n".join(
+            f"{item.start:.2f}s | {item.duration:.2f}s | {item.text}"
+            for item in transcript
+        )
 
         title = self.youtube_vid_title() or video_id
 
         self.filename = f"{title}-Youtube_transcript.txt" #custom file name
 
-        with open(self.filename, "w", encoding="utf-8") as transcript_file:
-            transcript_file.write(completed_transcript)
-        print(f"File has been saved: {self.filename}")
-
-        self.save_transcript()
+        self.completed_sourcenotes = completed_transcript
+       
         
 
     # May need to update code for this not sure

@@ -52,7 +52,7 @@ flowchart TD
 
 ---
 
-## Phase 1 – Solidify Source Notes Module (YouTube + Raw Text)
+## Phase 1 – Solidify Source Notes Module (YouTube + Raw Text) - both 
 
 **Goals**
 
@@ -77,7 +77,7 @@ flowchart TD
 
 ---
 
-## Phase 2 – StorageManager & Data Model (SQLite + Full-Text Search)
+## Phase 2 – StorageManager & Data Model (SQLite + Full-Text Search) - jay
 
 **Goals**
 
@@ -119,7 +119,7 @@ flowchart TD
 
 ---
 
-## Phase 3 – Zettelkasten Core: Breaking Sources into Atomic Notes
+## Phase 3 – Zettelkasten Core: Breaking Sources into Atomic Notes - basil 
 
 **Goals**
 
@@ -149,7 +149,7 @@ flowchart TD
 
 ---
 
-## Phase 4 – Search and Retrieval Features
+## Phase 4 – Search and Retrieval Features - jay
 
 **Goals**
 
@@ -181,7 +181,7 @@ flowchart TD
 
 ---
 
-## Phase 5 – AI Manager for Summaries & Suggested Links
+## Phase 5 – AI Manager for Summaries & Suggested Links -  both 
 
 **Goals**
 
@@ -211,7 +211,7 @@ flowchart TD
 
 ---
 
-## Phase 6 – Optional Web UI (After Core Works)
+## Phase 6 – Optional Web UI (After Core Works) - basil 
 
 **Goals**
 
@@ -233,7 +233,7 @@ flowchart TD
 
 ---
 
-## Phase 7 – Quality, Testing, and Developer Experience
+## Phase 7 – Quality, Testing, and Developer Experience - both
 
 **Goals**
 

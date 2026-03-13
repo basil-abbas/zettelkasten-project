@@ -51,7 +51,7 @@ flowchart TD
 
 ---
 
-### 2. Data Model Extensions
+### 2. Data Model Extensions -
 
 - **2.1 Source segments for anchoring**
   - **New dataclass** in `Module_SourceNotes` (e.g. `SourceSegment`):
