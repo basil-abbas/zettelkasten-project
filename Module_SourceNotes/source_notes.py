@@ -1,4 +1,7 @@
 from youtube_transcript_api import YouTubeTranscriptApi
+from Module_SourceNotes.source_note_data import SourceNote
+from datetime import datetime
+import uuid
 import yt_dlp #pip install yt-dlp    <----- import statement
 import re
 import shutil #To save the files in a specific folder
@@ -9,13 +12,38 @@ from pdf2image import convert_from_path, convert_from_bytes
 from PIL import Image
 import os
 import io
+
+from Module_SourceNotes.source_note_data import SourceNote
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-class SourceNotes:
-    def __init__(self, user_input=""):
-        self.video_url = user_input
+class SourceNotes_Extractor:
+    def __init__(self):
+        self.video_url = ""
         self.filename = ""
-        self.completed_sourcenotes 
+        self.completed_sourcenotes = ""
+
+
+
+    def data_instance(self, current_source_type): # 
+        return SourceNote(
+            id = str(uuid.uuid4()),
+            title = self.filename,
+            source_type = current_source_type,
+            source_url = self.video_url,
+            transcript = self.completed_sourcenotes,
+            created_at = datetime.now()
+        )
+
+# -----------------------------------------MANUAL_INPUT_CODE-----------------------------------------
+
+    def manual_text_transcript(self, pasted_user_text):
+        self.completed_sourcenotes = pasted_user_text
+        self.filename = "Manual Title"
+        self.video_url = "None"
+        return self.data_instance("Manual Input")
+
+
+
 
 # -----------------------------------------YOUTUBE_TRANSCRIPTS_CODE-----------------------------------------
     def youtube_vid_title(self):
@@ -29,13 +57,13 @@ class SourceNotes:
         return yt_title.strip().strip(".")
 
 
-    def youtube_transcript(self):
+    def youtube_transcript(self, user_input):
+        self.video_url = user_input
         if "v=" in self.video_url:
             video_id = self.video_url.split("v=")[1].split("&")[0] #Takes the Yt url and splits the list into two halves, where everything before v= is 0 and after is 1 and then it's repeated.
         else:
             video_id = self.video_url.split("/")[-1] #does the same thing splitting the link everywhere with a '/' and then grabbing the last element which is the id
         
-
         youtube = YouTubeTranscriptApi()
         transcript = youtube.fetch(video_id) #returns a list of transcript segments objects: .text, .start, .duration
 
@@ -50,8 +78,11 @@ class SourceNotes:
         self.filename = f"{title}-Youtube_transcript.txt" #custom file name
 
         self.completed_sourcenotes = completed_transcript
+
+        return self.data_instance("Youtube")
+
+    
        
-        
 
     # May need to update code for this not sure
     def save_transcript(self):
