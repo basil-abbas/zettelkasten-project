@@ -12,8 +12,9 @@ from pdf2image import convert_from_path, convert_from_bytes
 from PIL import Image
 import os
 import io
+from urllib.parse import unquote
+from urllib.request import url2pathname 
 
-from Module_SourceNotes.source_note_data import SourceNote
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 class SourceNotes_Extractor:
@@ -40,7 +41,8 @@ class SourceNotes_Extractor:
         self.completed_sourcenotes = pasted_user_text
         self.filename = "Manual Title"
         self.video_url = "None"
-        return self.data_instance("Manual Input")
+        final_package = self.data_instance("Raw Text")
+        return final_package
 
 
 
@@ -78,8 +80,8 @@ class SourceNotes_Extractor:
         self.filename = f"{title}-Youtube_transcript.txt" #custom file name
 
         self.completed_sourcenotes = completed_transcript
-
-        return self.data_instance("Youtube")
+        final_package = self.data_instance("youtube")
+        return final_package
 
     
        
@@ -114,6 +116,11 @@ class SourceNotes_Extractor:
         if pdf_input.startswith("http://") or pdf_input.startswith("https://"):
             pdf_bytes = self._download_pdf(pdf_input)   # fetch and download pdf from url and returns raw bytes
             pdf_source = "url"
+        elif pdf_input.startswith("file:///"):                       
+            local_path = url2pathname(pdf_input[7:])                  # strips "file://" and decodes %20 etc.
+            pdf_input = local_path
+            pdf_bytes = None
+            pdf_source = "local"
         else:           #if pdf isn't a url sets the bytes to none assumes the source is local path 
             pdf_bytes = None
             pdf_source = "local"
@@ -144,12 +151,17 @@ class SourceNotes_Extractor:
         #STEP4: save the extracted text 
         full_text = "\n".join(all_pages)
         self.filename = self._get_pdf_filename(pdf_input)
+        self.video_url = pdf_input          # add this
+        self.completed_sourcenotes = full_text
         
         with open(self.filename, "w", encoding="utf-8") as f:
             f.write(full_text)
 
         print(f"PDF transcript saved: {self.filename}")
         self.save_transcript()
+        self.completed_sourcenotes = full_text
+        final_package = self.data_instance("pdf")
+        return final_package
     
     def _download_pdf(self, url): #Downloads a PDF from a URL and returns it as raw bytes
         response = requests.get(url) #"request" is alibrary to access the internet this gets the url and stores it in response
@@ -170,7 +182,8 @@ class SourceNotes_Extractor:
     
     def _get_pdf_filename(self, pdf_input):#This method creates a clean, readable filename for the output text file.
         if pdf_input.startswith("http"):
-            base = pdf_input.split("/")[-1].replace(".pdf", "")#.split("/") breaks the URL into a list wherever there's a /
+            # Safer fix:
+            base = pdf_input.split("/")[-1].split("?")[0].replace(".pdf", "")#.split("/") breaks the URL into a list wherever there's a /
             #[-1] grabs the last item in that list which is the filename "invoice.pdf" .replace(".pdf", "") removes the .pdf extension, leaving just "invoice"
         else:   
             base = os.path.basename(pdf_input).replace(".pdf", "")
