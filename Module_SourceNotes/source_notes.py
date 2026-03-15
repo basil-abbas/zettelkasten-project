@@ -15,6 +15,8 @@ import io
 from urllib.parse import unquote
 from urllib.request import url2pathname 
 
+import pypdf
+
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 class SourceNotes_Extractor:
@@ -37,12 +39,13 @@ class SourceNotes_Extractor:
 
 # -----------------------------------------MANUAL_INPUT_CODE-----------------------------------------
 
-    def manual_text_transcript(self, pasted_user_text):
+    def manual_text_transcript(self, pasted_user_text, pasted_user_title):
         self.completed_sourcenotes = pasted_user_text
-        self.filename = "Manual Title"
+        self.filename = pasted_user_title
         self.video_url = "None"
-        final_package = self.data_instance("Raw Text")
-        return final_package
+
+        return self.data_instance("Raw Text")
+        
 
 
 
@@ -80,13 +83,11 @@ class SourceNotes_Extractor:
         self.filename = f"{title}-Youtube_transcript.txt" #custom file name
 
         self.completed_sourcenotes = completed_transcript
-        final_package = self.data_instance("youtube")
-        return final_package
+        return self.data_instance("youtube")
 
     
        
 
-    # May need to update code for this not sure
     def save_transcript(self):
         try:
             shutil.move(self.filename,"Module_SourceNotes\Exported_Transcripts") # takes in 2 parameters, the name of the file, and where you are moving it to
@@ -154,14 +155,9 @@ class SourceNotes_Extractor:
         self.video_url = pdf_input          # add this
         self.completed_sourcenotes = full_text
         
-        with open(self.filename, "w", encoding="utf-8") as f:
-            f.write(full_text)
-
-        print(f"PDF transcript saved: {self.filename}")
+        
         self.save_transcript()
-        self.completed_sourcenotes = full_text
-        final_package = self.data_instance("pdf")
-        return final_package
+        return self.data_instance("pdf")
     
     def _download_pdf(self, url): #Downloads a PDF from a URL and returns it as raw bytes
         response = requests.get(url) #"request" is alibrary to access the internet this gets the url and stores it in response
@@ -189,4 +185,8 @@ class SourceNotes_Extractor:
             base = os.path.basename(pdf_input).replace(".pdf", "")
         return f"{base}-PDF-transcript.txt"
 
-    
+
+# -----------------------------------------PDF_TRANSCRIPTS_CODE - V2-----------------------------------------
+
+
+
