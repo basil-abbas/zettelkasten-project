@@ -15,7 +15,7 @@ import io
 from urllib.parse import unquote
 from urllib.request import url2pathname 
 
-import pypdf
+
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
@@ -36,6 +36,16 @@ class SourceNotes_Extractor:
             transcript = self.completed_sourcenotes,
             created_at = datetime.now()
         )
+    
+    def save_transcript(self):
+        try:
+            shutil.move(self.filename,"Module_SourceNotes\\Exported_Transcripts") # takes in 2 parameters, the name of the file, and where you are moving it to
+            print(self.filename)
+            print(f"And was able to move {self.filename} to its destination")
+        except FileNotFoundError:
+            print(f"Error: The source file '{self.filename}' was not found")
+        except Exception as e:
+            print(f"Found error: {e}")
 
 # -----------------------------------------MANUAL_INPUT_CODE-----------------------------------------
 
@@ -46,8 +56,6 @@ class SourceNotes_Extractor:
 
         return self.data_instance("Raw Text")
         
-
-
 
 
 # -----------------------------------------YOUTUBE_TRANSCRIPTS_CODE-----------------------------------------
@@ -88,15 +96,6 @@ class SourceNotes_Extractor:
     
        
 
-    def save_transcript(self):
-        try:
-            shutil.move(self.filename,"Module_SourceNotes\Exported_Transcripts") # takes in 2 parameters, the name of the file, and where you are moving it to
-            print(self.filename)
-            print(f"And was able to move {self.filename} to its destination")
-        except FileNotFoundError:
-            print(f"Error: The source file '{self.filename}' was not found")
-        except Exception as e:
-            print(f"Found error: {e}")
 
 
 
@@ -186,7 +185,20 @@ class SourceNotes_Extractor:
         return f"{base}-PDF-transcript.txt"
 
 
+
 # -----------------------------------------PDF_TRANSCRIPTS_CODE - V2-----------------------------------------
+
+
+
+
+
+# # -----------------------------------------DOCX_TRANSCRIPTS_CODE-----------------------------------------
+
+
+
+
+# # -----------------------------------------ANY_WEBSITE_TRANSCRIPTS_CODE-----------------------------------------
+
 
 
 
