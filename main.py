@@ -17,9 +17,9 @@ def main():
     while True:
         print("--------------------------------------------")
         print("1. New Zettel")
-        print("2. View Zettels") # saves users progress so they can come back [inside of here it will be like a libary of like chats of all the study sessions and in here we can have sub objects for flashcards/quizzes for specific chats]
+        print("2. View Zettels") # To view all chats [inside of here it will be like a libary of like chats of all the study sessions and in here we can have sub objects for flashcards/quizzes for specific chats]
         print("3. View Second Brain") # gonna show the mind map if I can even figure it out [would be a total mind map of all notes regardless of what chats to show connections]
-        print("4. ") # not sure what we can have this as
+        print("4. Storage?") # not sure what we can have this as [maybe like if the user wants to see their storage? idk]
         print("5. Quit")
         print("--------------------------------------------")
 
