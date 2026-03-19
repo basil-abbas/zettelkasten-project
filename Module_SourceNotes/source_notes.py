@@ -1,3 +1,4 @@
+# import statements
 from youtube_transcript_api import YouTubeTranscriptApi
 from Module_SourceNotes.source_note_data import SourceNote
 from datetime import datetime
@@ -14,6 +15,9 @@ import os
 import io
 from urllib.parse import unquote
 from urllib.request import url2pathname 
+
+import pdfplumber
+from docx import Document
 
 
 
@@ -187,13 +191,50 @@ class SourceNotes_Extractor:
 
 
 # -----------------------------------------PDF_TRANSCRIPTS_CODE - V2-----------------------------------------
+    def pdf_transcript_v2(self, user_input):
+        all_pages = []
 
+        if "file:///" in user_input:
+            user_input = user_input.replace("file:///", "")
+        
+        self.filename = user_input.rsplit('\\')[-1].rsplit('.')[0]
+
+        
+        with pdfplumber.open(user_input) as docx:
+            for page in docx.pages:
+                formatted = f"\n\n-- Page: {page.page_number} --\n"
+                all_pages.append(formatted)
+                all_pages.append(page.extract_text())
+                
+
+            self.completed_sourcenotes = "\n".join(all_pages)
+
+            return self.data_instance(".pdf")
 
 
 
 
 # # -----------------------------------------DOCX_TRANSCRIPTS_CODE-----------------------------------------
+    def word_docx_transcript(self, user_input):
+        document = Document(user_input)
+        all_pages = []
 
+        self.filename = user_input.rsplit("\\")[-1].rsplit(".")[0]
+
+        for paragraph in document.paragraphs:
+            print(paragraph.text)
+            all_pages.append(paragraph.text)
+            
+        
+        for table in document.tables:
+            for row in table.rows:
+                row_text = ' | '.join(cell.text.strip() for cell in row.cells)
+                if row_text.strip():
+                    all_pages.append(row_text)
+        
+        self.completed_sourcenotes = "\n".join(all_pages)
+
+        return self.data_instance(".docx")
 
 
 

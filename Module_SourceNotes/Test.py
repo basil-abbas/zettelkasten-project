@@ -32,6 +32,9 @@ def pdf_transcript_v2(user_input):
             
 
          full_text = "\n".join(all_pages)
+         print(full_text)
+
+pdf_transcript_v2(file_path)
          
 
 
@@ -53,6 +56,9 @@ def word_docx_transcript(user_input):
                 all_pages.append(row_text)
     
     full_text = "\n".join(all_pages)
+
+
+
 
 
 
