@@ -33,6 +33,6 @@ class DatabaseManager():
             """, (note.id,
                   note.title,
                   note.source_type,
-                  note.source_url,
+                  note.source_path,
                   note.transcript,
                   note.created_at.isoformat()))

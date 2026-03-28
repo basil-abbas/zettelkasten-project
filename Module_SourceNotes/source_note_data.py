@@ -6,7 +6,7 @@ class SourceNote:
     id: str
     title: str
     source_type: str  # "youtube" | "pdf" | "manual"
-    source_url: str | None
+    source_path: str | None
     transcript: str
     created_at: datetime
 

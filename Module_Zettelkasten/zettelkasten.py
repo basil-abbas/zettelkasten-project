@@ -26,7 +26,7 @@ class Zettelkasten():
         )
 
     
-    def add_note(self, user_input):
+    def add_note(self, user_input): # aka literature notes
         self.user_note = user_input
 
         return self.data_instance()
@@ -38,6 +38,9 @@ class Zettelkasten():
 
         return self.data_instance()
         
-    
-    def make_permanent_notes(self):
+
+        
+# this needs to be where after the user is done adding notes and stuff they review all the literature notes they have and then they select which ones 
+# are the most important and which ones need to get deleted and made permanent    
+    def make_permanent_notes(self): 
         pass

@@ -1,6 +1,9 @@
 import pdfplumber
 from docx import Document
 
+import os
+from google import genai
+from dotenv import load_dotenv
 
 
 
@@ -12,7 +15,7 @@ url = r"https://learn.madisoncollege.edu/d2l/le/dropbox/77056/202659/DownloadAtt
 
 
 
-file_path = r"C:\Users\basil\Downloads\Chris Peterson_CompSci2_Fall 25.pdf"
+
 word_doc = r"C:\Users\basil\Downloads\Botany of Baking Updated Sp 26.docx"
 
 def pdf_transcript_v2(user_input):
@@ -33,8 +36,6 @@ def pdf_transcript_v2(user_input):
 
          full_text = "\n".join(all_pages)
          print(full_text)
-
-pdf_transcript_v2(file_path)
          
 
 
@@ -58,11 +59,37 @@ def word_docx_transcript(user_input):
     full_text = "\n".join(all_pages)
 
 
+file_path = r"C:\Users\basil\Downloads\Chris Peterson_CompSci2_Fall 25.pdf"
+
+load_dotenv()
 
 
+def gemini_extract(user_input):
+    try:
+        api_key = os.getenv("GEMINI_API_KEY")
+
+        client = genai.Client(api_key=api_key)
+
+        uploaded_file = client.files.upload(file=user_input)
 
 
+        prompt = """
+        Extract the exact contents of this file, include no extra commentary just organized text from the following file.
+        """
 
+        response = client.models.generate_content(
+        model="gemini-2.5-flash-lite",
+        contents=[uploaded_file, prompt]
+    )
+
+        return response.text
+
+    except Exception as e:
+        print(f"Gemini Extraction failed: {e}")
+        return None
+
+
+print(gemini_extract(file_path))
 
 
 

@@ -19,15 +19,19 @@ from urllib.request import url2pathname
 import pdfplumber
 from docx import Document
 
+import os
+from google import genai
+from dotenv import load_dotenv
+load_dotenv()
 
 
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
 class SourceNotes_Extractor:
     def __init__(self):
-        self.video_url = ""
+        self.source_path = ""
         self.filename = ""
-        self.completed_sourcenotes = ""
+        self.completed_transcript = ""
 
 
 
@@ -36,8 +40,8 @@ class SourceNotes_Extractor:
             id = str(uuid.uuid4()),
             title = self.filename,
             source_type = current_source_type,
-            source_url = self.video_url,
-            transcript = self.completed_sourcenotes,
+            source_path = self.source_path,
+            transcript = self.completed_transcript,
             created_at = datetime.now()
         )
     
@@ -51,12 +55,43 @@ class SourceNotes_Extractor:
         except Exception as e:
             print(f"Found error: {e}")
 
+
+
+    def extract_transcript(self, user_input): #logic may need fixing aswell as in main needs exception handling
+        try:
+
+            if "youtube.com" in user_input or "youtu.be" in user_input:
+                return self.youtube_transcript(user_input)
+            
+            elif ".pdf" in user_input:
+                current_source_note = self.pdf_transcript_v2(user_input)
+                if not current_source_note or len(current_source_note.transcript) < 100:
+                    return self.gemini_extract(user_input)
+                
+                else:
+                    return current_source_note
+            
+            elif user_input.endswith(".docx"):
+                current_source_note = self.word_docx_transcript(user_input)
+                if not current_source_note or len(current_source_note.transcript) < 100:
+                    return self.gemini_extract(user_input)
+                
+                else:
+                    return current_source_note
+            
+            else:
+                return None
+        
+        except Exception as e:
+            print(f"Source note extraction failed: {e}")
+            return None
+
 # -----------------------------------------MANUAL_INPUT_CODE-----------------------------------------
 
     def manual_text_transcript(self, pasted_user_text, pasted_user_title):
-        self.completed_sourcenotes = pasted_user_text
+        self.completed_transcript = pasted_user_text
         self.filename = pasted_user_title
-        self.video_url = "None"
+        self.source_path = "None"
 
         return self.data_instance("Raw Text")
         
@@ -67,7 +102,7 @@ class SourceNotes_Extractor:
         ydl_opts = {'quiet': True} #suppresses console output from yt-dlp while downloading the vedio
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl: 
-            info = ydl.extract_info(self.video_url, download=False) #fetches vedios metadata without having to download
+            info = ydl.extract_info(self.source_path, download=False) #fetches vedios metadata without having to download
             yt_title = info.get('title')
 
         yt_title = re.sub(r'[<>:"/\\|?*\x00-\x1F]+', "_", yt_title)#replaces illegal sybmols with _
@@ -75,11 +110,11 @@ class SourceNotes_Extractor:
 
 
     def youtube_transcript(self, user_input):
-        self.video_url = user_input
-        if "v=" in self.video_url:
-            video_id = self.video_url.split("v=")[1].split("&")[0] #Takes the Yt url and splits the list into two halves, where everything before v= is 0 and after is 1 and then it's repeated.
+        self.source_path = user_input
+        if "v=" in self.source_path:
+            video_id = self.source_path.split("v=")[1].split("&")[0] #Takes the Yt url and splits the list into two halves, where everything before v= is 0 and after is 1 and then it's repeated.
         else:
-            video_id = self.video_url.split("/")[-1] #does the same thing splitting the link everywhere with a '/' and then grabbing the last element which is the id
+            video_id = self.source_path.split("/")[-1] #does the same thing splitting the link everywhere with a '/' and then grabbing the last element which is the id
         
         youtube = YouTubeTranscriptApi()
         transcript = youtube.fetch(video_id) #returns a list of transcript segments objects: .text, .start, .duration
@@ -94,14 +129,10 @@ class SourceNotes_Extractor:
 
         self.filename = f"{title}-Youtube_transcript.txt" #custom file name
 
-        self.completed_sourcenotes = completed_transcript
+        self.completed_transcript = completed_transcript
         return self.data_instance("youtube")
 
     
-       
-
-
-
 
 # -----------------------------------------PDF_TRANSCRIPTS_CODE-----------------------------------------
         """
@@ -155,8 +186,8 @@ class SourceNotes_Extractor:
         #STEP4: save the extracted text 
         full_text = "\n".join(all_pages)
         self.filename = self._get_pdf_filename(pdf_input)
-        self.video_url = pdf_input          # add this
-        self.completed_sourcenotes = full_text
+        self.source_path = pdf_input          # add this
+        self.completed_transcript = full_text
         
         
         self.save_transcript()
@@ -207,10 +238,10 @@ class SourceNotes_Extractor:
                 all_pages.append(page.extract_text())
                 
 
-            self.completed_sourcenotes = "\n".join(all_pages)
+            self.completed_transcript = "\n".join(all_pages)
+            self.source_path = user_input
 
             return self.data_instance(".pdf")
-
 
 
 
@@ -222,7 +253,6 @@ class SourceNotes_Extractor:
         self.filename = user_input.rsplit("\\")[-1].rsplit(".")[0]
 
         for paragraph in document.paragraphs:
-            print(paragraph.text)
             all_pages.append(paragraph.text)
             
         
@@ -232,14 +262,40 @@ class SourceNotes_Extractor:
                 if row_text.strip():
                     all_pages.append(row_text)
         
-        self.completed_sourcenotes = "\n".join(all_pages)
+        self.completed_transcript = "\n".join(all_pages)
+        self.source_path = user_input
 
         return self.data_instance(".docx")
 
 
 
-# # -----------------------------------------ANY_WEBSITE_TRANSCRIPTS_CODE-----------------------------------------
+# # -----------------------------------------GEMINI_TRANSCRIPTS_CODE-----------------------------------------
+    def gemini_extract(self, user_input):
+        try:
+            api_key = os.getenv("GEMINI_API_KEY")
+
+            client = genai.Client(api_key=api_key)
+
+            uploaded_file = client.files.upload(file=user_input)
 
 
+            prompt = """
+            Extract the exact contents of this file, include no extra commentary just organized text from the following file.
+            """
 
+            response = client.models.generate_content(
+            model="gemini-2.5-flash-lite",
+            contents=[uploaded_file, prompt]
+        )
+
+            self.completed_transcript = response.text
+            self.filename = user_input.rsplit('\\')[-1].rsplit('.')[0]
+            self.source_path = user_input
+
+            return self.data_instance("Gemini_extraction")
+
+        except Exception as e:
+            print(f"Gemini Extraction failed: {e}")
+            return None
+            
 
