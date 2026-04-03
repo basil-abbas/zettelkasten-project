@@ -1,6 +1,8 @@
 import sqlite3
 from Module_SourceNotes.source_note_data import SourceNote
 from datetime import datetime
+from Module_Zettelkasten.zettelkasten_data import ZettelkastenNote
+import uuid
 
 
 class DatabaseManager():
@@ -23,7 +25,14 @@ class DatabaseManager():
                 transcript TEXT NOT NULL, 
                 created_at TEXT NOT NULL)
             """)
-            
+
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS links(
+                id TEXT PRIMARY KEY,
+                from_id TEXT NOT NULL,
+                to_id TEXT NOT NULL,
+                relation_type TEXT NOT NULL)
+            """)
     def save_source_notes(self, note:SourceNote):#instert the user input with relevent atributes to the data table
         with self.get_connection() as connect:
             cursor = connect.cursor()
@@ -55,3 +64,34 @@ class DatabaseManager():
             """, (id,))
             note = cursor.fetchone()
             return note
+    
+    def create_link(self, from_id:str, to_id:str, relation_type:str):
+        with self.get_connection() as connect:
+            cursor = connect.cursor()
+            id = str(uuid.uuid4())
+            cursor.execute("""
+            INSERT INTO links (id, from_id, to_id, relation_type)
+            VALUES (?,?,?,?)
+            """, (id, from_id, to_id, relation_type))
+
+    def get_links(self, note_id:str):
+        with self.get_connection() as connect:
+            cursor = connect.cursor()
+            cursor.execute("""
+            SELECT from_id, to_id, relation_type FROM links WHERE to_id = ? OR from_id = ?
+            """, (note_id, note_id))
+            links = cursor.fetchall()
+            return links
+
+
+    #def save_zettelkasten_note(self, note:ZettelkastenNote):
+        with self.get_connection() as connect:
+            cursor = connect.cursor()
+            cursor.execute("""
+            INSERT INTO zettelkasten_notes (id, source_note_id, note_status_id, note_contents, created_at)
+            VALUES (?,?,?,?,?)
+            """, (note.id,
+                  note.source_note_id,
+                  note.note_status_id,
+                  note.note_contents,
+                  note.created_at.isoformat()))
