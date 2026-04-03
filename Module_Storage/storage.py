@@ -36,3 +36,22 @@ class DatabaseManager():
                   note.source_path,
                   note.transcript,
                   note.created_at.isoformat()))
+
+    def get_all_notes(self):
+        with self.get_connection() as connect:
+            cursor = connect.cursor()
+            cursor.execute("""
+            SELECT id, title FROM source_notes
+            """
+            )
+            user_notes = cursor.fetchall() 
+            return user_notes
+
+    def get_note_by_id(self, id:str):
+        with self.get_connection() as connect:
+            cursor = connect.cursor()
+            cursor.execute("""
+            SELECT transcript, created_at, source_url FROM source_notes WHERE id = ?
+            """, (id,))
+            note = cursor.fetchone()
+            return note
