@@ -21,7 +21,7 @@ class DatabaseManager():
                 id TEXT PRIMARY KEY,
                 title TEXT NOT NULL,
                 source_type TEXT NOT NULL,
-                source_url TEXT, 
+                source_path TEXT, 
                 transcript TEXT NOT NULL, 
                 created_at TEXT NOT NULL)
             """)
@@ -33,11 +33,25 @@ class DatabaseManager():
                 to_id TEXT NOT NULL,
                 relation_type TEXT NOT NULL)
             """)
+
+            cursor.execute("""
+            CREATE VIRTUAL TABLE IF NOT EXISTS notes_fts 
+                USING fts5(title, transcript ,id);""") #fts5 is a full text search engine that allows for fast search of the database  
+
+            cursor.execute("""
+            CREATE TABLE IF NOT EXISTS zettelkasten_notes(
+                id TEXT PRIMARY KEY,
+                source_note_id TEXT NOT NULL,
+                note_status_id TEXT NOT NULL,
+                note_contents TEXT NOT NULL,
+                created_at TEXT NOT NULL)
+            """)
+
     def save_source_notes(self, note:SourceNote):#instert the user input with relevent atributes to the data table
         with self.get_connection() as connect:
             cursor = connect.cursor()
             cursor.execute("""
-            INSERT INTO source_notes (id, title, source_type, source_url, transcript, created_at)
+            INSERT INTO source_notes (id, title, source_type, source_path, transcript, created_at)
             VALUES (?,?,?,?,?,?)
             """, (note.id,
                   note.title,
@@ -45,6 +59,8 @@ class DatabaseManager():
                   note.source_path,
                   note.transcript,
                   note.created_at.isoformat()))
+            cursor.execute("""INSERT INTO notes_fts(id, title, transcript) VALUES (?, ?, ?)
+            """, (note.id, note.title, note.transcript))
 
     def get_all_notes(self):
         with self.get_connection() as connect:
@@ -60,7 +76,7 @@ class DatabaseManager():
         with self.get_connection() as connect:
             cursor = connect.cursor()
             cursor.execute("""
-            SELECT transcript, created_at, source_url FROM source_notes WHERE id = ?
+            SELECT transcript, created_at, source_path FROM source_notes WHERE id = ?
             """, (id,))
             note = cursor.fetchone()
             return note
@@ -83,8 +99,17 @@ class DatabaseManager():
             links = cursor.fetchall()
             return links
 
+    def search_notes(self, query:str):
+        with self.get_connection() as connect:
+            cursor = connect.cursor()
+            cursor.execute("""
+            SELECT * FROM notes_fts WHERE notes_fts MATCH ?
+            """
+            , (query,))
+            notes = cursor.fetchall()
+            return notes
 
-    #def save_zettelkasten_note(self, note:ZettelkastenNote):
+    def save_zettelkasten_note(self, note:ZettelkastenNote):
         with self.get_connection() as connect:
             cursor = connect.cursor()
             cursor.execute("""

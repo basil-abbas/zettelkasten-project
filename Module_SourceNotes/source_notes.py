@@ -31,7 +31,7 @@ class SourceNotes_Extractor:
             id = str(uuid.uuid4()),
             title = self.filename,
             source_type = current_source_type,
-            source_url = self.video_url,
+            source_path = self.video_url,
             transcript = self.completed_sourcenotes,
             created_at = datetime.now()
         )
