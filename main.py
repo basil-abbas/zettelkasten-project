@@ -60,6 +60,24 @@ def main():
 
 
 
+def source_notes_database(sources_added=0):
+    while True:
+        source_notes = DatabaseManager().get_all_notes()
+        for index, note in enumerate(source_notes, start=1):
+                print(f"{index}. {note[1]}") 
+    
+        try: 
+            chosen_number = int(input("Enter number: "))
+            if chosen_number < 1 or chosen_number > len(source_notes):
+                print("Invalid selection, please pick a valid number")
+            else:
+                chosen_id = source_notes[chosen_number - 1][0]  # gets the UUID at that position
+                note = DatabaseManager().get_note_by_id(chosen_id)  
+                print(note[0])
+        except ValueError:
+                print("Invalid input, please enter a number")
+                continue    
+
 
 
 def choose_sources():
@@ -74,39 +92,32 @@ def choose_sources():
         print("4. Done adding sources")
         print("--------------------------------------------")
 
-        choice = input("Select option 1, 2, 3, 4, or 5: ").strip()
+        choice = input("Select option 1, 2, 3,or 4: ").strip()
 
         if choice == "1":
             url = input("Enter your url:").strip()
             note = SourceNotes_Extractor().extract_transcript(url)
             sources_database.save_source_notes(note)  
-            #sources.append(note) # just for test for visuals delete this later
            
 
         elif choice == "2":
             path = input("Enter local source path (.pdf, .docx, etc): ").strip()
             note = SourceNotes_Extractor().extract_transcript(path)
             sources_database.save_source_notes(note)
-            #sources.append(note)
 
 
         elif choice == "3":
             user_text = input("Paste your copied text: ")
             user_text_title = input("Enter title: ") #in the future we need to update this so after the user pastes some text an AI just gives a Title instead since rn this kinda tedious for the user
-            note = SourceNotes_Extractor().manual_text_transcript(user_text, user_text_title)
+            note = SourceNotes_Extractor().extract_transcript(user_text, user_text_title)
             sources_database.save_source_notes(note)
-            #sources.append(note)
 
         elif choice == "4":
             take_notes()
             break
 
-
-        # elif choice == "5":
-        #     print("Goodbye!")
-        #     break
         else:
-            print("Invalid option, please pick from 1, 2, 3, 4, or 5")
+            print("Invalid option, please pick from 1, 2, 3,or 4")
 
 
 def take_notes():
@@ -115,11 +126,8 @@ def take_notes():
     print("Here is the simplified sources:")
     print("\n" * 5)
     
-    if not sources or sources[0] is None:
-        print("No valid sources were added into the temporary list to view transcripts")
-        return
-    else:
-        print(sources[0].transcript)
+    source_notes_database()
+
 
     while True:
         print("--------------------------------------------")
