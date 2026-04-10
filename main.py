@@ -18,7 +18,7 @@ def main():
         print("1. New Zettel")
         print("2. View Zettels") # saves users progress so they can come back [inside of here it will be like a libary of like chats of all the study sessions and in here we can have sub objects for flashcards/quizzes for specific chats]
         print("3. View Second Brain") # gonna show the mind map if I can even figure it out [would be a total mind map of all notes regardless of what chats to show connections]
-        print("4. View Source Notes") # not sure what we can have this as
+        print("4. Storage") # User can view their total storage and see which chats contain large amount of storage or smth
         print("5. Quit")
         print("--------------------------------------------")
 
@@ -60,10 +60,10 @@ def main():
 
 
 
-def source_notes_database(sources_added=0):
+def source_notes_database(number_of_sources: int):
     while True:
         source_notes = DatabaseManager().get_all_notes()
-        for index, note in enumerate(source_notes, start=1):
+        for index, note in enumerate(source_notes[-number_of_sources:], start=1):
                 print(f"{index}. {note[1]}") 
     
         try: 
@@ -82,6 +82,7 @@ def source_notes_database(sources_added=0):
 
 def choose_sources():
     sources_database = DatabaseManager()
+    number_of_sources = 0
     print("\n" * 5)
     print("Please submit some form of source notes to get started")
     while True: 
@@ -93,6 +94,8 @@ def choose_sources():
         print("--------------------------------------------")
 
         choice = input("Select option 1, 2, 3,or 4: ").strip()
+
+        number_of_sources += 1 
 
         if choice == "1":
             url = input("Enter your url:").strip()
@@ -113,20 +116,20 @@ def choose_sources():
             sources_database.save_source_notes(note)
 
         elif choice == "4":
-            take_notes()
+            take_notes(number_of_sources)
             break
 
         else:
             print("Invalid option, please pick from 1, 2, 3,or 4")
 
 
-def take_notes():
+def take_notes(number_of_sources):
     notes_database = DatabaseManager()
 
     print("Here is the simplified sources:")
     print("\n" * 5)
     
-    source_notes_database()
+    source_notes_database(number_of_sources)
 
 
     while True:
